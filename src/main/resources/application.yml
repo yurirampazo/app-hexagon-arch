@@ -1,0 +1,7 @@
+spring:
+  application.name: hexagonal
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/hexagonal
+
+test.client.address.url: http://localhost:8082/addresses

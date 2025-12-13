@@ -5,6 +5,7 @@ import com.test.hexagonal.adapters.in.controller.request.CustomerRequest;
 import com.test.hexagonal.adapters.in.controller.response.CustomerResponse;
 import com.test.hexagonal.application.ports.in.FindCustomerByIdInputPort;
 import com.test.hexagonal.application.ports.in.InsertCustomerInputPort;
+import com.test.hexagonal.application.ports.in.UpdateCustomerInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class CustomerController {
   private final InsertCustomerInputPort insertCustomerInputPort;
   private final CustomerRequestMapper customerRequestMapper;
   private final FindCustomerByIdInputPort findCustomerByIdInputPort;
+  private final UpdateCustomerInputPort updateCustomerInputPort;
 
   @PostMapping
   public ResponseEntity<Void> insert(@Valid @RequestBody CustomerRequest customerRequest) {
@@ -32,5 +34,14 @@ public class CustomerController {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok(customerRequestMapper.toCustomerResponse(customer));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Void> update(@PathVariable final String id,
+                                     @RequestBody CustomerRequest customerRequest) {
+    var customer = customerRequestMapper.toCustomer(customerRequest);
+    customer.setId(id);
+    updateCustomerInputPort.update(customer, customerRequest.getZipCode());
+    return ResponseEntity.noContent().build();
   }
 }

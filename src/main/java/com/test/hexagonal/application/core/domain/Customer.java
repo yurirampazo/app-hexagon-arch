@@ -28,11 +28,11 @@ public class Customer {
     this.id = id;
   }
 
-  public Boolean getCpfValid() {
+  public Boolean getIsCpfValid() {
     return isCpfValid;
   }
 
-  public void setCpfValid(Boolean cpfValid) {
+  public void setIsCpfValid(Boolean cpfValid) {
     isCpfValid = cpfValid;
   }
 
